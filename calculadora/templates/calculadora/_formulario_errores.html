@@ -1,0 +1,21 @@
+{% if form.errors or form.non_field_errors %}
+<div class="errores">
+    <h3>Corregir los siguientes datos</h3>
+    <ul>
+        {% for err in form.non_field_errors %}
+            <li>{{ err }}</li>
+        {% endfor %}
+        {% for campo in form %}
+            {% for err in campo.errors %}
+                <li><strong>{{ campo.label }}:</strong> {{ err }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% if error_calculo %}
+<div class="errores">
+    <h3>No se puede calcular</h3>
+    <p>{{ error_calculo }}</p>
+</div>
+{% endif %}

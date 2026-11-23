@@ -1,0 +1,82 @@
+{% extends "calculadora/base.html" %}
+{% load formato %}
+
+{% block titulo %}Análisis de costos{% endblock %}
+
+{% block contenido %}
+<h1>Análisis de costos</h1>
+
+<section class="ejemplo">
+    <h2>Ejemplo base</h2>
+    <p>{{ enunciado }}</p>
+    <p><a class="boton" href="?ejemplo=1">Cargar ejemplo</a></p>
+</section>
+
+<section class="formulario">
+    <form method="post">
+        {% csrf_token %}
+        <div class="campos">
+            <div class="campo">{{ form.lam.label_tag }}{{ form.lam }}</div>
+            <div class="campo">{{ form.mu.label_tag }}{{ form.mu }}</div>
+            <div class="campo">{{ form.cs.label_tag }}{{ form.cs }}</div>
+            <div class="campo">{{ form.cw.label_tag }}{{ form.cw }}</div>
+            <div class="campo">{{ form.s_max.label_tag }}{{ form.s_max }}</div>
+            <div class="campo">{{ form.unidad.label_tag }}{{ form.unidad }}</div>
+            <div class="campo">{{ form.base.label_tag }}{{ form.base }}</div>
+            <div class="campo">{{ form.moneda.label_tag }}{{ form.moneda }}</div>
+        </div>
+        <button type="submit">Calcular</button>
+    </form>
+</section>
+
+{% include "calculadora/_formulario_errores.html" %}
+
+{% if resultado %}
+    <section class="resumen">
+        <h2>Resultado</h2>
+        <p>
+            Número mínimo de servidores estable: <strong>s = {{ resultado.s_minimo_estable }}</strong>.
+            Se evaluó de s = {{ resultado.s_minimo_estable }} a s = {{ resultado.s_maximo }}.
+        </p>
+        <p class="interpretacion-corta">{{ interpretacion }}</p>
+    </section>
+
+    <section class="tabla-costos-cont">
+        <h2>Tabla comparativa</h2>
+        <table class="tabla-costos">
+            <thead>
+                <tr>
+                    <th>s</th>
+                    <th>ρ</th>
+                    <th>L</th>
+                    <th>Lq</th>
+                    <th>Wq (min)</th>
+                    <th>CS ({{ moneda }}/{{ unidad }})</th>
+                    <th>CE ({{ moneda }}/{{ unidad }})</th>
+                    <th>CT ({{ moneda }}/{{ unidad }})</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in filas %}
+                    <tr class="{% if f.optima %}fila-optima{% endif %}">
+                        <td>{{ f.s }}</td>
+                        <td>{{ f.rho|num4 }}</td>
+                        <td>{{ f.l|num4 }}</td>
+                        <td>{{ f.lq|num4 }}</td>
+                        <td>{{ f.wq_min|num2 }}</td>
+                        <td>{{ f.costo_servicio|num0 }}</td>
+                        <td>{{ f.costo_espera|num0 }}</td>
+                        <td><strong>{{ f.costo_total|num0 }}</strong></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p class="nota">La fila resaltada corresponde al número óptimo de servidores.</p>
+    </section>
+
+    <section class="grafica">
+        <h2>Costo de servicio vs. costo de espera</h2>
+        <div class="grafica-svg">{{ grafica_svg|safe }}</div>
+    </section>
+{% endif %}
+{% endblock %}

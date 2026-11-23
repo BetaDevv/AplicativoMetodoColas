@@ -1,0 +1,78 @@
+{% load formato %}
+
+<h2>Indicadores de desempeño</h2>
+<table class="tabla-indicadores">
+    <thead>
+        <tr><th>Indicador</th><th>Valor</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>ρ</td><td>{{ resultado.rho|num4 }} ({{ resultado.rho|porc }} %)</td><td>Utilización del sistema</td></tr>
+        <tr><td>P₀</td><td>{{ resultado.p0|num4 }}</td><td>Probabilidad de sistema vacío</td></tr>
+        <tr><td>L</td><td>{{ resultado.l|num4 }} clientes</td><td>Clientes promedio en el sistema</td></tr>
+        <tr><td>Lq</td><td>{{ resultado.lq|num4 }} clientes</td><td>Clientes promedio en la cola</td></tr>
+        <tr>
+            <td>W</td>
+            <td>{{ resultado.w|num4 }} {{ unidad }} ({{ w_min|num1 }} min)</td>
+            <td>Tiempo promedio en el sistema</td>
+        </tr>
+        <tr>
+            <td>Wq</td>
+            <td>{{ resultado.wq|num4 }} {{ unidad }} ({{ wq_min|num1 }} min)</td>
+            <td>Tiempo promedio en la cola</td>
+        </tr>
+        <tr><td>Pw</td><td>{{ resultado.pw|num4 }}</td><td>Probabilidad de que un cliente espere</td></tr>
+    </tbody>
+</table>
+
+<section class="interpretacion">
+    <h2>Interpretación</h2>
+    <p>{{ interpretacion.parrafo }}</p>
+    {% for aviso in interpretacion.advertencias %}
+        <p class="aviso">{{ aviso }}</p>
+    {% endfor %}
+</section>
+
+<section class="distribucion">
+    <h2>Distribución de probabilidad (Pn)</h2>
+    <table class="tabla-distribucion">
+        <thead>
+            <tr>
+                <th>n</th>
+                <th>Pn</th>
+                <th>Pn acumulada</th>
+                <th>Representación</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for n, pn, pn_acum in distribucion_zip %}
+                <tr>
+                    <td>{{ n }}</td>
+                    <td>{{ pn|num4 }}</td>
+                    <td>{{ pn_acum|num4 }}</td>
+                    <td class="barra-celda">
+                        <span class="barra" style="width: {{ pn|ancho:pn_max }}%"></span>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<details class="desarrollo">
+    <summary>Desarrollo paso a paso</summary>
+    <table class="tabla-desarrollo">
+        <thead>
+            <tr><th>Fórmula</th><th>Sustitución</th><th>Resultado</th><th>Significado</th></tr>
+        </thead>
+        <tbody>
+            {% for formula, sustitucion, valor, significado in pasos %}
+                <tr>
+                    <td>{{ formula }}</td>
+                    <td>{{ sustitucion }}</td>
+                    <td><strong>{{ valor }}</strong></td>
+                    <td>{{ significado }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</details>

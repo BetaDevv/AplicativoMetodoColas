@@ -1,0 +1,49 @@
+{% extends "calculadora/base.html" %}
+{% load formato %}
+
+{% block titulo %}M/M/s{% endblock %}
+
+{% block contenido %}
+<h1>Modelo M/M/s</h1>
+
+<section class="ejemplo">
+    <h2>Ejemplo base</h2>
+    <p>{{ enunciado }}</p>
+    <p><a class="boton" href="?ejemplo=1">Cargar ejemplo</a></p>
+</section>
+
+<section class="formulario">
+    <form method="post">
+        {% csrf_token %}
+        <div class="campos">
+            <div class="campo">
+                {{ form.lam.label_tag }}
+                {{ form.lam }}
+            </div>
+            <div class="campo">
+                {{ form.mu.label_tag }}
+                {{ form.mu }}
+            </div>
+            <div class="campo">
+                {{ form.s.label_tag }}
+                {{ form.s }}
+            </div>
+            <div class="campo">
+                {{ form.unidad.label_tag }}
+                {{ form.unidad }}
+            </div>
+            <div class="campo">
+                {{ form.n_max.label_tag }}
+                {{ form.n_max }}
+            </div>
+        </div>
+        <button type="submit">Calcular</button>
+    </form>
+</section>
+
+{% include "calculadora/_formulario_errores.html" %}
+
+{% if resultado %}
+    {% include "calculadora/_resultados_cola.html" %}
+{% endif %}
+{% endblock %}

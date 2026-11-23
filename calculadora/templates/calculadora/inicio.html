@@ -1,0 +1,50 @@
+{% extends "calculadora/base.html" %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
+<h1>Teoría de Colas</h1>
+<p class="descripcion">
+    Calculadora de parámetros de desempeño para sistemas de espera con llegadas Poisson,
+    tiempos de servicio exponenciales, disciplina FIFO, y población y cola infinitas.
+</p>
+
+<section class="modelos">
+    <article>
+        <h2><a href="{% url 'mm1' %}">M/M/1</a></h2>
+        <p>
+            Un único servidor. Entrega la utilización, el número promedio de clientes en el
+            sistema y en la cola, los tiempos promedio y la distribución de probabilidad del
+            número de clientes.
+        </p>
+    </article>
+
+    <article>
+        <h2><a href="{% url 'mms' %}">M/M/s</a></h2>
+        <p>
+            s servidores idénticos en paralelo. Mismos indicadores que M/M/1 más la
+            probabilidad de esperar (fórmula C de Erlang).
+        </p>
+    </article>
+
+    <article>
+        <h2><a href="{% url 'costos' %}">Análisis de costos</a></h2>
+        <p>
+            Compara el costo de servicio (número de servidores) con el costo de espera
+            (tiempo de los clientes en el sistema) y recomienda el número óptimo de
+            servidores.
+        </p>
+    </article>
+</section>
+
+<section class="supuestos">
+    <h2>Supuestos del modelo</h2>
+    <ul>
+        <li>Llegadas siguen un proceso de Poisson con tasa λ.</li>
+        <li>Tiempos de servicio siguen una distribución exponencial con tasa μ.</li>
+        <li>Disciplina de atención: FIFO (primero en llegar, primero en ser atendido).</li>
+        <li>Población de clientes y capacidad de la cola infinitas.</li>
+        <li>Condición de estabilidad: ρ = λ / (s·μ) &lt; 1.</li>
+    </ul>
+</section>
+{% endblock %}

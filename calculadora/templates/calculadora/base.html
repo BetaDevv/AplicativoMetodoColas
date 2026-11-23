@@ -1,0 +1,35 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Teoría de Colas{% endblock %} — Investigación de Operaciones</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+    <header class="barra">
+        <div class="contenedor">
+            <div class="marca">Calculadora de Colas</div>
+            <nav class="menu">
+                <a href="{% url 'inicio' %}">Inicio</a>
+                <span>·</span>
+                <a href="{% url 'mm1' %}">M/M/1</a>
+                <span>·</span>
+                <a href="{% url 'mms' %}">M/M/s</a>
+                <span>·</span>
+                <a href="{% url 'costos' %}">Costos</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contenedor">
+        {% block contenido %}{% endblock %}
+    </main>
+
+    <footer class="pie">
+        <div class="contenedor">
+            Investigación de Operaciones — Ingeniería de Sistemas, ITM
+        </div>
+    </footer>
+</body>
+</html>

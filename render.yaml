@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: aplicativo-metodo-colas
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn colas.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.5
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
